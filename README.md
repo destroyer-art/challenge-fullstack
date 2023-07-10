@@ -59,7 +59,7 @@ Construir um aplicativo de rastreamento de entregas que permita aos usuários au
 - Crie um arquivo Dockerfile para empacotar o aplicativo React.
 - Configure o Dockerfile para copiar os arquivos de build do aplicativo React para o contêiner e iniciar o servidor da aplicação.
 
-**7.Crie um arquivo docker-compose.yml:**
+**7. Crie um arquivo docker-compose.yml:**
 
 - Crie um arquivo docker-compose.yml para definir e executar os serviços necessários, como o aplicativo React, o servidor NestJS e o banco de dados PostgreSQL.
 
