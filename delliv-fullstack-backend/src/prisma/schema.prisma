@@ -1,0 +1,18 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:352291@localhost:5432/postgres"
+}
+
+model Order {
+  id              Int    @id @default(autoincrement())
+  customerName    String
+  deliveryAddress String
+  status          String
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String
+  password String
+}
