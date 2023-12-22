@@ -1,9 +1,10 @@
 // src/auth/auth.service.ts
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './login.dto';
 import { UsersService } from './users/users.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -14,14 +15,22 @@ export class AuthService {
 
   async login(credentials: LoginDto) {
     const user = await this.usersService.findOneByEmail(credentials.email);
+    if (user) {
+      const isPasswordValid = await bcrypt.compare(
+        credentials.password,
+        user.password,
+      );
+      if (isPasswordValid) {
+        const payload = { email: user.email, sub: user.id };
+        const accessToken = this.jwtService.sign(payload);
+        console.log('Received credentials:', credentials);
+        console.log('User found:', user);
+        console.log('Is password valid?', isPasswordValid);
 
-    if (user && user.password === credentials.password) {
-      const payload = { sub: user.id, email: user.email };
-      return {
-        access_token: this.jwtService.sign(payload),
-      };
+        return { message: 'Login successful', access_token: accessToken };
+      }
     }
 
-    return { message: 'Invalid credentials' };
+    throw new UnauthorizedException('Invalid credentials');
   }
 }
