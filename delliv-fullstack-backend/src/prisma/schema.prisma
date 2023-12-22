@@ -15,4 +15,9 @@ model User {
   name     String
   email    String
   password String
+  salt     String
+}
+
+generator client {
+  provider = "prisma-client-js"
 }
