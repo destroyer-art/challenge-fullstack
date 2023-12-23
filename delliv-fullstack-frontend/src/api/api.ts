@@ -12,13 +12,15 @@ const checkResponseError = (error: any) => {
 export const api: AxiosInstance = axios.create({
   baseURL: 'http://localhost:3001/',
   withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 api.interceptors.response.use(
   (response) => response,
   checkResponseError
 );
-
 
 export async function GET(endpoint: string, options = {}) {
   try {
@@ -46,3 +48,15 @@ export async function POST(endpoint: string, data: any, options = {}) {
   }
 }
 
+export async function PUT(endpoint: string, data: any, options = {}) {
+  try {
+    const response = await api.put(endpoint, data, options);
+    return response;
+  } catch (err) {
+    console.log(err);
+    if (axios.isAxiosError(err)) {
+      checkResponseError((err as AxiosError).response);
+    }
+    throw err;
+  }
+}
