@@ -22,7 +22,7 @@ export default function LoginForm() {
       setShowSuccessMessage(true);
       setTimeout(() => {
         setShowSuccessMessage(false);
-        history.push('/orders');
+        history.push('/orders-list');
       }, 2000);
 
       setErrorMessage(null);
