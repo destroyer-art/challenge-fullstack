@@ -5,6 +5,7 @@ import { Order } from '../../../types/orderTypes';
 import { fetchOrders } from '../../../redux/actions/ordersActions';
 import { RootState } from '../../../redux/rootReducer';
 import OrderStatusUpdater from '../OrderStatusUpdater';
+import { Container, CustomerName, DeliveryAddress, ErrorMessage, LoadingMessage, OrderItem, Status, Title } from './styles';
 
 export default function OrdersList() {
   const dispatch = useDispatch();
@@ -16,21 +17,20 @@ export default function OrdersList() {
   }, [dispatch]);
 
   return (
-    <div>
-      <h1>Lista de Pedidos</h1>
-      {status === 'loading' && <p>Loading...</p>}
-      {status === 'failed' && <p>Error: {error}</p>}
+    <Container>
+      <Title>Lista de Pedidos</Title>
+      {status === 'loading' && <LoadingMessage>Loading...</LoadingMessage>}
+      {status === 'failed' && <ErrorMessage>Error: {error}</ErrorMessage>}
       <ul>
         {orders.map((order: Order) => (
-          <li key={order.id}>
-            <p>Nome do Cliente: {order.customerName}</p>
-            <p>Endereço de Entrega: {order.deliveryAddress}</p>
-            <p>Status do Pedido: {order.status}</p>
-
+          <OrderItem key={order.id}>
+            <CustomerName>Nome do Cliente: {order.customerName}</CustomerName>
+            <DeliveryAddress>Endereço de Entrega: {order.deliveryAddress}</DeliveryAddress>
             <OrderStatusUpdater order={order} />
-          </li>
+          </OrderItem>
         ))}
       </ul>
-    </div>
+    </Container>
   );
 }
+
