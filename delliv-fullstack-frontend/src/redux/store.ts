@@ -1,16 +1,9 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 
-import orderReducer from './orderSlice';
-import authReducer from './reducers/authReducer';
-
-const rootReducer = combineReducers({
-  auth: authReducer,
-});
+import rootReducer from './rootReducer';
 
 const store = configureStore({
-  reducer: {
-    orders: orderReducer,
-  },
+  reducer: rootReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
