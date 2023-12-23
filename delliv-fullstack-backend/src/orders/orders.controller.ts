@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { Order } from './order.entity';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Order } from './entities/order.entity';
 
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
