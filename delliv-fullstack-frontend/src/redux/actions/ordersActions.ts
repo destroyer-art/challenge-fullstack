@@ -1,30 +1,42 @@
 import { Dispatch } from 'redux';
-import { RootState } from '../store';
-import { OrderType } from '../../types/orderTypes';
-import { GET } from '../../api/api';
+import { GET, PUT } from '../../api/api';
+import { FETCH_ORDERS, UPDATE_ORDER_STATUS, OrdersActionTypes } from '../../types/orderTypes';
 
-export enum OrderActionTypes {
-  FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS',
-  FETCH_ORDERS_FAILURE = 'FETCH_ORDERS_FAILURE',
-}
-
-interface FetchOrdersSuccessAction {
-  type: OrderActionTypes.FETCH_ORDERS_SUCCESS;
-  payload: OrderType[];
-}
-
-interface FetchOrdersFailureAction {
-  type: OrderActionTypes.FETCH_ORDERS_FAILURE;
-  payload: string;
-}
-
-export type OrderAction = FetchOrdersSuccessAction | FetchOrdersFailureAction;
-
-export const fetchOrders = () => async (dispatch: Dispatch<OrderAction>, getState: () => RootState) => {
+export const fetchOrders = () => async (dispatch: Dispatch<OrdersActionTypes>) => {
   try {
-    const response = await GET('/orders');
-    dispatch({ type: OrderActionTypes.FETCH_ORDERS_SUCCESS, payload: response.data });
-  } catch (error: any) {
-    dispatch({ type: OrderActionTypes.FETCH_ORDERS_FAILURE, payload: (error as Error).message });
+    const response = await GET('orders');
+
+    dispatch({
+      type: FETCH_ORDERS,
+      payload: response.data,
+    });
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+  }
+};
+
+export const updateOrderStatus = (orderId: number, newStatus: string) => async (
+  dispatch: Dispatch<OrdersActionTypes>
+) => {
+  try {
+    await PUT(`orders/${orderId}/update-status`, { newStatus }); 
+
+    dispatch({
+      type: UPDATE_ORDER_STATUS,
+      payload: {
+        orderId,
+        newStatus,
+      },
+    });
+  } catch (error) {
+    console.error(`Error updating status for order ${orderId}:`, error);
+
+    dispatch({
+      type: UPDATE_ORDER_STATUS,
+      payload: {
+        orderId,
+        newStatus: '',
+      },
+    });
   }
 };
