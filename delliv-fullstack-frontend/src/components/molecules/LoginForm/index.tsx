@@ -7,7 +7,11 @@ import Button from "../../atoms/Button";
 import { Flex } from "../../../styles/global";
 import { login } from "../../../redux/actions/authActions";
 
-export default function LoginForm() {
+interface LoginFormProps {
+  onLoginSuccess: () => void;
+}
+
+export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
   const history = useHistory();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -22,8 +26,11 @@ export default function LoginForm() {
       setShowSuccessMessage(true);
       setTimeout(() => {
         setShowSuccessMessage(false);
+        
         history.push('/orders-list');
       }, 2000);
+      
+      onLoginSuccess();
 
       setErrorMessage(null);
     } catch (error) {
