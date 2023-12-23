@@ -1,27 +1,36 @@
-import React from "react";
-import { ListItemContainer } from "./styles";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-interface OrderListItemProps {
-  order: {
-    id: number;
-    customerName: string;
-    deliveryAddress: string;
-    status: string;
-  };
-}
+import { Order } from '../../../types/orderTypes';
+import { fetchOrders } from '../../../redux/actions/ordersActions';
+import { RootState } from '../../../redux/rootReducer';
+import OrderStatusUpdater from '../OrderStatusUpdater';
 
-export default function OrderListItem({ order }: OrderListItemProps) {
+export default function OrdersList() {
+  const dispatch = useDispatch();
+  const { data: orders = [], status, error } = useSelector((state: RootState) => state.orders);
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(fetchOrders());
+  }, [dispatch]);
+
   return (
-    <ListItemContainer>
-      <p>
-        <strong>Name:</strong> {order.customerName}
-      </p>
-      <p>
-        <strong>Delivery Address:</strong> {order.deliveryAddress}
-      </p>
-      <p>
-        <strong>Status:</strong> {order.status}
-      </p>
-    </ListItemContainer>
+    <div>
+      <h1>Lista de Pedidos</h1>
+      {status === 'loading' && <p>Loading...</p>}
+      {status === 'failed' && <p>Error: {error}</p>}
+      <ul>
+        {orders.map((order: Order) => (
+          <li key={order.id}>
+            <p>Nome do Cliente: {order.customerName}</p>
+            <p>Endereço de Entrega: {order.deliveryAddress}</p>
+            <p>Status do Pedido: {order.status}</p>
+
+            <OrderStatusUpdater order={order} />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
