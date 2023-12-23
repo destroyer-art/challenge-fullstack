@@ -5,7 +5,9 @@ export const StyledButton = styled.button`
   background-color: #007bff;
   color: #fff;
   cursor: pointer;
-  width: 100%;
+  width: 130px;
+  margin-top: 10px;
   border-radius: 5px;
+  display: inline-block;
   text-transform: uppercase;
 `;
