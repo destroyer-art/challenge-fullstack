@@ -16,7 +16,6 @@ export class UserService {
     };
 
     const createdUser = await this.prisma.user.create({ data });
-    console.log(createdUser);
     return {
       ...createdUser,
       password: undefined,
