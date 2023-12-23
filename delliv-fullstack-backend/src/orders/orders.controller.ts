@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { Order } from './entities/order.entity';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
@@ -19,10 +19,10 @@ export class OrdersController {
     return this.ordersService.createOrder(createOrderDto);
   }
 
-  @Patch(':id/update-status/:newStatus')
+  @Put(':id/update-status')
   async updateOrderStatus(
     @Param('id') orderId: number,
-    @Param('newStatus') newStatus: string,
+    @Body('newStatus') newStatus: string,
   ): Promise<Order> {
     return this.ordersService.updateOrderStatus(orderId, newStatus);
   }
