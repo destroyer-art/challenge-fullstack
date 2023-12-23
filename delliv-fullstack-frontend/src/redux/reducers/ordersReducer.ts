@@ -1,24 +1,18 @@
-interface Order {
-  id: number;
-  customerName: string;
-  deliveryAddress: string;
-  status: string;
-}
-
-interface OrdersState {
-  orders: Order[];
-}
+import { FETCH_ORDERS, OrdersActionTypes, OrdersState } from "../../types/orderTypes";
 
 const initialState: OrdersState = {
-  orders: [],
+  data: [],
+  status: 'idle',
+  error: null,
 };
 
-type OrdersAction = { type: 'SET_ORDERS'; payload: Order[] };
-
-const ordersReducer = (state = initialState, action: OrdersAction): OrdersState => {
+const ordersReducer = (state = initialState, action: OrdersActionTypes): OrdersState => {
   switch (action.type) {
-    case 'SET_ORDERS':
-      return { ...state, orders: action.payload };
+    case FETCH_ORDERS:
+      return {
+        ...state,
+        data: action.payload,
+      };
     default:
       return state;
   }
