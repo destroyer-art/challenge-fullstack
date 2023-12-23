@@ -1,25 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import OrderListPage from '../pages/OrderListPage';
 import LoginPage from '../pages/LoginPage';
 
-export default function AppRouter(){
-  const isAuthenticated = true;
+export default function AppRouter() {
+  const [isAuthenticated, setAuthenticated] = useState(false);
 
-  interface PrivateRouteProps {
-    component: React.ComponentType<any>;
-    path: string;
-    exact?: boolean;
-  }
-
-  const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => (
+  const PrivateRoute: React.FC<{ path: string; exact?: boolean; component: React.ComponentType<any> }> = ({
+    component: Component,
+    ...rest
+  }) => (
     <Route
       {...rest}
       render={(props) =>
         isAuthenticated ? (
-          <Component {...props} />
+          <Component {...props} setAuthenticated={setAuthenticated} />
         ) : (
-          <Redirect to="/login" />
+          <Redirect to="/" />
         )
       }
     />
@@ -28,9 +25,10 @@ export default function AppRouter(){
   return (
     <Router>
       <Switch>
-        <PrivateRoute path="/orders-list"  component={OrderListPage} />
-        <Route path="/" exact component={LoginPage} />
+        <PrivateRoute path="/orders-list" component={OrderListPage} />
+        <Route path="/" render={(props) => <LoginPage {...props} setAuthenticated={setAuthenticated} />} />
+        <Redirect from="/" to="/" exact />
       </Switch>
     </Router>
-  )
+  );
 }
