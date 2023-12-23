@@ -11,7 +11,6 @@ async function main() {
       name: 'Usuário Inicial',
       email: 'teste@example.com',
       password: hashedPassword,
-      salt: 'salt',
     },
   });
 }
