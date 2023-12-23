@@ -17,6 +17,7 @@ export class OrdersService {
       data: createOrderDto,
     });
   }
+
   async updateOrderStatus(orderId: number, newStatus: string): Promise<Order> {
     return this.prisma.order.update({
       where: { id: orderId },
