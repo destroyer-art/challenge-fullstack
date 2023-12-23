@@ -1,39 +1,67 @@
+// Seu componente React
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Form, LoginFormContainer, Title } from "./styles";
 import Input from "../../atoms/Input";
 import Button from "../../atoms/Button";
 import { Flex } from "../../../styles/global";
+import { login } from "../../../redux/actions/authActions";
 
 export default function LoginForm() {
-  const [username, setUsername] = useState<string>("");
+  const history = useHistory();
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleLogin = () => {
-    // lógica para lidar com o login, pode chamar ação do redux
-    console.log(`Login with username: ${username} and password: ${password}`);
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
+    try {
+      // @ts-ignore
+      const response = login(email, password);
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        history.push('/orders');
+      }, 2000);
+
+      setErrorMessage(null);
+    } catch (error) {
+      console.log('error', error);
+      setErrorMessage("Login failed. Please check your credentials.");
+    }
   };
+
   return (
     <LoginFormContainer>
       <Flex>
         <Title>Login</Title>
-        <Form>
-            <Input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Username"
-            />
-          
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-            />
-            
-          <Button onClick={handleLogin}>Login</Button>
+        <Form onSubmit={handleLogin}>
+          <Input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+          <Button type="submit">Login</Button>
         </Form>
       </Flex>
+      {showSuccessMessage && (
+        <div style={{ color: 'green', marginTop: '10px' }}>
+          Login successful! Redirecting to orders...
+        </div>
+      )}
+      {errorMessage && (
+        <div style={{ color: 'red', marginTop: '10px' }}>
+          {errorMessage}
+        </div>
+      )}
     </LoginFormContainer>
   );
 }

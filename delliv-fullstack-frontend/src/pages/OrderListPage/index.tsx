@@ -1,23 +1,19 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import OrderListItem from "../../components/molecules/OrderListItem";
-import { setOrders, updateOrderStatus } from "../../redux/orderSlice";
 import { RootState } from "../../redux/rootReducer";
-import { generateMockOrders } from "../../utils/mock";
+import { updateOrderStatus } from "../../redux/orderSlice";
 import StatusUpdateForm from "../../components/molecules/StatusUpdateForm";
+import { OrderType } from "../../types/orderTypes";
+import { fetchOrders } from "../../redux/actions/ordersActions";
 
 export default function OrderListPage() {
   const dispatch = useDispatch();
-  // Certifique-se de que state.orders é do tipo Order[]
-  const orders = useSelector((state: RootState) => state.orders.orders);
+  const orders: OrderType[] = useSelector((state: RootState) => state.orders.orders);
 
   useEffect(() => {
-    // Substitua isso pela chamada à sua API real quando possível
-    // dispatch(fetchOrders());
-
-    // Use dados mockados enquanto ainda não há uma API real
-    const mockOrders = generateMockOrders(5);
-    dispatch(setOrders(mockOrders));
+    // @ts-ignore
+    dispatch(fetchOrders());
   }, [dispatch]);
 
   const handleUpdateStatus = (orderId: number, newStatus: string) => {
@@ -27,7 +23,7 @@ export default function OrderListPage() {
 
   return (
     <div>
-      {Array.isArray(orders) ? (
+      {Array.isArray(orders) && orders.length > 0 ? (
         orders.map((order) => (
           <div key={order.id}>
             <OrderListItem order={order} />
