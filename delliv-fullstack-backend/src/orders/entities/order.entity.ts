@@ -1,6 +1,4 @@
-import { Prisma } from '@prisma/client';
-
-export class Order implements Prisma.OrderCreateInput {
+export class Order {
   id?: number;
   customerName: string;
   deliveryAddress: string;
