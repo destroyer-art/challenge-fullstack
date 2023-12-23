@@ -16,10 +16,15 @@ interface SelectStatusProps {
   orderId: number;
   currentStatus: string;
   children?: React.ReactNode;
-  onChange: React.Dispatch<React.SetStateAction<string>>;
+  onChange: (selectedStatus: string) => void;
 }
 
-const SelectStatus: React.FC<SelectStatusProps> = ({ orderId, currentStatus, children, onChange }) => {
+export default function SelectStatus({
+  orderId,
+  currentStatus,
+  children,
+  onChange,
+}: SelectStatusProps) {
   const dispatch = useDispatch();
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -40,5 +45,3 @@ const SelectStatus: React.FC<SelectStatusProps> = ({ orderId, currentStatus, chi
     </SelectContainer>
   );
 };
-
-export default SelectStatus;
