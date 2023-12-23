@@ -1,36 +1,47 @@
-// src/auth/auth.service.ts
-
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from './login.dto';
-import { UsersService } from './users/users.service';
 import * as bcrypt from 'bcrypt';
+import { UnauthorizedError } from './errors/unauthorized.error';
+import { User } from '../user/entities/user.entity';
+import { UserService } from '../user/user.service';
+import { UserToken } from './models/UserToken';
+import { UserPayload } from './models/UserPayload';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly userService: UserService,
   ) {}
 
-  async login(credentials: LoginDto) {
-    const user = await this.usersService.findOneByEmail(credentials.email);
-    if (user) {
-      const isPasswordValid = await bcrypt.compare(
-        credentials.password,
-        user.password,
-      );
-      if (isPasswordValid) {
-        const payload = { email: user.email, sub: user.id };
-        const accessToken = this.jwtService.sign(payload);
-        console.log('Received credentials:', credentials);
-        console.log('User found:', user);
-        console.log('Is password valid?', isPasswordValid);
+  async login(user: User): Promise<UserToken> {
+    const payload: UserPayload = {
+      sub: user.id,
+      email: user.email,
+      name: user.name,
+    };
 
-        return { message: 'Login successful', access_token: accessToken };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
+
+  async validateUser(email: string, password: string): Promise<User> {
+    const user = await this.userService.findByEmail(email);
+
+    if (user) {
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (isPasswordValid) {
+        return {
+          ...user,
+          password: undefined,
+        };
       }
     }
 
-    throw new UnauthorizedException('Invalid credentials');
+    throw new UnauthorizedError(
+      'Email address or password provided is incorrect.',
+    );
   }
 }
