@@ -1,9 +1,17 @@
 import LoginForm from "../../components/molecules/LoginForm";
 
-export default function LoginPage(){
+interface LoginPageProps {
+  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function LoginPage({ setAuthenticated }: LoginPageProps) {
+  const handleLoginSuccess = () => {
+    setAuthenticated(true);
+  };
+
   return (
     <div>
-      <LoginForm />
+      <LoginForm onLoginSuccess={handleLoginSuccess} />
     </div>
   )
 }
