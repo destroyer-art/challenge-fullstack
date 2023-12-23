@@ -1,27 +1,44 @@
 import React from 'react';
-import { SelectContainer, StyledSelect } from './styles';
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { updateOrderStatus } from '../../../redux/actions/ordersActions';
 
-interface StatusSelectProps {
-  value: string;
-  onChange: (value: string) => void;
+const SelectContainer = styled.div`
+  margin-top: 8px;
+`;
+
+const StyledSelect = styled.select`
+  padding: 8px;
+  font-size: 14px;
+`;
+
+interface SelectStatusProps {
+  orderId: number;
+  currentStatus: string;
+  children?: React.ReactNode;
+  onChange: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function SelectStatus({ value, onChange }: StatusSelectProps) {
-  const statusOptions = ['Pending', 'In Progress', 'Delivered'];
+const SelectStatus: React.FC<SelectStatusProps> = ({ orderId, currentStatus, children, onChange }) => {
+  const dispatch = useDispatch();
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onChange(e.target.value);
+    const newStatus = e.target.value;
+    onChange(newStatus);
+    // @ts-ignore
+    dispatch(updateOrderStatus(orderId, newStatus));
   };
 
   return (
     <SelectContainer>
-      <StyledSelect value={value} onChange={handleStatusChange}>
-        {statusOptions.map((status) => (
-          <option key={status} value={status}>
-            {status}
-          </option>
-        ))}
+      <StyledSelect value={currentStatus} onChange={handleStatusChange}>
+        <option value="Pendente">Pendente</option>
+        <option value="Em andamento">Em andamento</option>
+        <option value="Concluído">Concluído</option>
       </StyledSelect>
+      {children}
     </SelectContainer>
   );
 };
+
+export default SelectStatus;
