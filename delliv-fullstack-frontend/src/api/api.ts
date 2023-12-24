@@ -10,7 +10,7 @@ const checkResponseError = (error: any) => {
 };
 
 export const api: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:3001/',
+  baseURL: 'http://localhost:4000/',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
