@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  # Serviço para o aplicativo React
+  react-app:
+    build:
+      context: ./delliv-fullstack-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - nestjs-server
+
+  # Serviço para o servidor NestJS
+  nestjs-server:
+    build:
+      context: ./delliv-fullstack-backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres-db
+    env_file:
+      - ./delliv-fullstack-backend/.env
+
+  # Serviço para o banco de dados PostgreSQL
+  postgres-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 352291
+    ports:
+      - "5432:5432"
+
