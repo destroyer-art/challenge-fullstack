@@ -18,12 +18,7 @@ Certifique-se de ter o Docker e o Docker Compose instalados em seu sistema.
    cd challenge-fullstack
 
 2. **Configuração backend:**
-- **Crie um arquivo .env com as configurações do banco de dados:**
-```bash
-   POSTGRES_DB=postgres
-   POSTGRES_USER=postgres
-   POSTGRES_PASSWORD=352291
-```
+- **Crie um arquivo .env com as configurações do .env.example:**
 
 3. **Docker compose:**
 - **volte a raíz do projeto se não estiver**
