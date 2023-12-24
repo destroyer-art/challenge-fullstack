@@ -1,4 +1,3 @@
-// src/orders/orders.service.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Order } from './entities/order.entity';
