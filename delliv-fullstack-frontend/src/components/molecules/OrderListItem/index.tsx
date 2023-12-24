@@ -5,7 +5,7 @@ import { Order } from '../../../types/orderTypes';
 import { fetchOrders } from '../../../redux/actions/ordersActions';
 import { RootState } from '../../../redux/rootReducer';
 import OrderStatusUpdater from '../OrderStatusUpdater';
-import { Container, CustomerName, DeliveryAddress, ErrorMessage, LoadingMessage, OrderItem, Status, Title } from './styles';
+import { Container, CustomerName, DeliveryAddress, ErrorMessage, LoadingMessage, OrderItem, Title } from './styles';
 
 export default function OrdersList() {
   const dispatch = useDispatch();

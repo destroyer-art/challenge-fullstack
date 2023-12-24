@@ -1,5 +1,4 @@
-// Seu componente React
-import React, { useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Form, LoginFormContainer, Title } from "./styles";
 import Input from "../../atoms/Input";
@@ -23,6 +22,7 @@ export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
     try {
       // @ts-ignore
       const response = login(email, password);
+      console.log(response);
       setShowSuccessMessage(true);
       setTimeout(() => {
         setShowSuccessMessage(false);
