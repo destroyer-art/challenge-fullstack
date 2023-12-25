@@ -1,14 +1,17 @@
-import React from "react";
-import { StyledButton } from "./styles";
+import React, { ButtonHTMLAttributes } from 'react';
+import { StyledButton } from './styles';
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   onClick?: () => void;
   children?: React.ReactNode;
-  type?: string;
 }
 
-export default function Button({ onClick, children }: ButtonProps) {
+export default function Button({ onClick, children, type, ...props }: ButtonProps) {
+  const validType: "button" | "submit" | "reset" | undefined = type;
+
   return (
-    <StyledButton onClick={onClick}>{children}</StyledButton>
+    <StyledButton data-testid="button" type={validType} onClick={onClick} {...props}>
+      {children}
+    </StyledButton>
   );
 }

@@ -1,74 +1,80 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../../redux/actions/authActions";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Form, LoginFormContainer, Title } from "./styles";
 import Input from "../../atoms/Input";
 import Button from "../../atoms/Button";
-import { Flex } from "../../../styles/global";
-import { login } from "../../../redux/actions/authActions";
+import Label from "../../atoms/Label";
 
 interface LoginFormProps {
   onLoginSuccess: () => void;
 }
 
 export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // @ts-ignore
-      const response = login(email, password);
-      console.log(response);
-      setShowSuccessMessage(true);
-      setTimeout(() => {
-        setShowSuccessMessage(false);
-        
-        history.push('/orders-list');
-      }, 2000);
-      
-      onLoginSuccess();
+      if (!email || !password) {
+        throw new Error('Email and password are required');
+      }
 
-      setErrorMessage(null);
-    } catch (error) {
-      console.log('error', error);
-      setErrorMessage("Login failed. Please check your credentials.");
+      // @ts-ignore
+      await dispatch(login(email, password, onLoginSuccess));
+
+      history.push("/");
+    } catch (error: any) {
+      let errorMessage = 'Erro desconhecido';
+      let statusCode = 500;
+
+      if (error.response) {
+        errorMessage = error.response.data.message;
+        statusCode = error.response.status;
+      }
+
+      toast.error(`Erro ${statusCode}: ${errorMessage}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true
+      });
     }
   };
 
   return (
     <LoginFormContainer>
-      <Flex>
-        <Title>Login</Title>
-        <Form onSubmit={handleLogin}>
-          <Input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-          <Button type="submit">Login</Button>
-        </Form>
-      </Flex>
-      {showSuccessMessage && (
-        <div style={{ color: 'green', marginTop: '10px' }}>
-          Login successful! Redirecting to orders...
-        </div>
-      )}
-      {errorMessage && (
-        <div style={{ color: 'red', marginTop: '10px' }}>
-          {errorMessage}
-        </div>
-      )}
+      <Title>Login</Title>
+      <Form onSubmit={handleLogin}>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
+
+        <Label htmlFor="password">Password</Label>
+        <Input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+        />
+        <Button data-testid="button" type="submit">
+          Login
+        </Button>
+      </Form>
+      <ToastContainer />
     </LoginFormContainer>
   );
 }

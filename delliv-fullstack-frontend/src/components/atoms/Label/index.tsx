@@ -8,5 +8,5 @@ interface LabelProps {
 }
 
 export default function Label({ htmlFor, children, style }: LabelProps) {
-  return <StyledLabel htmlFor={htmlFor} style={style}>{children}</StyledLabel>;
+  return <StyledLabel htmlFor={htmlFor} style={style} data-testid={`label-${htmlFor}`}>{children}</StyledLabel>;
 }

@@ -21,16 +21,20 @@ export default function OrdersList() {
       <Title>Lista de Pedidos</Title>
       {status === 'loading' && <LoadingMessage>Loading...</LoadingMessage>}
       {status === 'failed' && <ErrorMessage>Error: {error}</ErrorMessage>}
-      <ul>
-        {orders.map((order: Order) => (
-          <OrderItem key={order.id}>
-            <CustomerName>Nome do Cliente: {order.customerName}</CustomerName>
-            <DeliveryAddress>Endereço de Entrega: {order.deliveryAddress}</DeliveryAddress>
-            <OrderStatusUpdater order={order} />
-          </OrderItem>
-        ))}
-      </ul>
+      
+      {orders.length === 0 ? (
+        <p>A lista de pedidos está vazia.</p>
+      ) : (
+        <ul>
+          {orders.map((order: Order) => (
+            <OrderItem key={order.id}>
+              <CustomerName>Nome do Cliente: {order.customerName}</CustomerName>
+              <DeliveryAddress>Endereço de Entrega: {order.deliveryAddress}</DeliveryAddress>
+              <OrderStatusUpdater order={order} />
+            </OrderItem>
+          ))}
+        </ul>
+      )}
     </Container>
   );
 }
-
