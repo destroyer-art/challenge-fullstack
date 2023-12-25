@@ -12,6 +12,10 @@ export class LoginValidationMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const body = req.body;
 
+    if (!body.email || !body.password) {
+      throw new BadRequestException('Both email and password must be provided');
+    }
+
     const loginRequestBody = new LoginRequestBody();
     loginRequestBody.email = body.email;
     loginRequestBody.password = body.password;

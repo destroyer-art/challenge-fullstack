@@ -11,7 +11,7 @@ import { AuthRequest } from './models/AuthRequest';
 import { IsPublic } from './decorators/is-public.decorator';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
-@Controller()
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -20,7 +20,8 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Request() req: AuthRequest) {
-    console.log('login');
-    return this.authService.login(req.user);
+    console.log('Login successful');
+    const token = await this.authService.login(req.user);
+    return { token };
   }
 }

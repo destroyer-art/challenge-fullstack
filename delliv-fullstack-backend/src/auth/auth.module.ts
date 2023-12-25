@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { LocalStrategy } from './stategies/local.strategy';
 import { JwtStrategy } from './stategies/jwt.strategy';
 import { LoginValidationMiddleware } from './middlewares/login-validation.middleware';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { LoginValidationMiddleware } from './middlewares/login-validation.middle
       signOptions: { expiresIn: '30d' },
     }),
   ],
-  controllers: [],
+  controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule implements NestModule {
