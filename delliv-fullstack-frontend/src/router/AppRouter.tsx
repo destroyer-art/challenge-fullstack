@@ -16,7 +16,7 @@ export default function AppRouter() {
         isAuthenticated ? (
           <Component {...props} setAuthenticated={setAuthenticated} />
         ) : (
-          <Redirect to="/" />
+          <Redirect to="/login" />
         )
       }
     />
@@ -26,8 +26,10 @@ export default function AppRouter() {
     <Router>
       <Switch>
         <PrivateRoute path="/orders-list" component={OrderListPage} />
-        <Route path="/" render={(props) => <LoginPage {...props} setAuthenticated={setAuthenticated} />} />
-        <Redirect from="/" to="/" exact />
+        <Route path="/login" render={(props) => <LoginPage {...props} setAuthenticated={setAuthenticated} />} />
+        <Route path="/" exact>
+          {isAuthenticated ? <Redirect to="/orders-list" /> : <Redirect to="/login" />}
+        </Route>
       </Switch>
     </Router>
   );

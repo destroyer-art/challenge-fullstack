@@ -1,13 +1,6 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
-
-const checkResponseError = (error: any) => {
-  if (error.response && error.response.status) {
-    console.log('Erro de status:', error.response.status);
-  } else {
-    console.log('Erro na resposta:', error.message);
-  }
-  return Promise.reject(error);
-};
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const api: AxiosInstance = axios.create({
   baseURL: 'http://localhost:4000/',
@@ -19,7 +12,22 @@ export const api: AxiosInstance = axios.create({
 
 api.interceptors.response.use(
   (response) => response,
-  checkResponseError
+  (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      toast.error('Credenciais incorretas. Por favor, verifique suas informações.', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+      });
+
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 5000);
+    }
+    return Promise.reject(error);
+  },
 );
 
 export async function GET(endpoint: string, options = {}) {
@@ -28,9 +36,6 @@ export async function GET(endpoint: string, options = {}) {
     return response;
   } catch (err) {
     console.log(err);
-    if (axios.isAxiosError(err)) {
-      checkResponseError((err as AxiosError).response);
-    }
     throw err;
   }
 }
@@ -41,9 +46,6 @@ export async function POST(endpoint: string, data: any, options = {}) {
     return response;
   } catch (err) {
     console.log(err);
-    if (axios.isAxiosError(err)) {
-      checkResponseError((err as AxiosError).response);
-    }
     throw err;
   }
 }
@@ -54,9 +56,6 @@ export async function PUT(endpoint: string, data: any, options = {}) {
     return response;
   } catch (err) {
     console.log(err);
-    if (axios.isAxiosError(err)) {
-      checkResponseError((err as AxiosError).response);
-    }
     throw err;
   }
 }

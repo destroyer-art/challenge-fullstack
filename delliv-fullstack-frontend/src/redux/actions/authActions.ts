@@ -15,17 +15,34 @@ interface LoginSuccessAction {
 
 interface LoginFailureAction {
   type: AuthActionTypes.LOGIN_FAILURE;
-  payload: string;
+  payload: {
+    error: string;
+    statusCode: number;
+  };
 }
 
 export type AuthAction = LoginSuccessAction | LoginFailureAction;
 
 export const login = (email: string, password: string, onSuccess: () => void) => async (dispatch: Dispatch<AuthAction>, getState: () => RootState) => {
   try {
-    const response = await POST('/login', { email, password });
-    dispatch({ type: AuthActionTypes.LOGIN_SUCCESS, payload: response.data });
-    onSuccess();
+    const response = await POST('auth/login', { email, password });
+
+    if (response && response.data) {
+      dispatch({ type: AuthActionTypes.LOGIN_SUCCESS, payload: response.data });
+      onSuccess();
+    } else {
+      const errorPayload = {
+        error: 'Invalid response from server',
+        statusCode: 500,
+      };
+      dispatch({ type: AuthActionTypes.LOGIN_FAILURE, payload: errorPayload });
+    }
   } catch (error: any) {
-    dispatch({ type: AuthActionTypes.LOGIN_FAILURE, payload: (error as Error).message });
+    const errorPayload = {
+      error: error.response?.data?.error || 'Unknown error',
+      statusCode: error.response?.status || 500,
+    };
+
+    dispatch({ type: AuthActionTypes.LOGIN_FAILURE, payload: errorPayload });
   }
 };
