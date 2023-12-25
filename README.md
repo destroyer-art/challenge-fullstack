@@ -59,7 +59,7 @@ Para aplicar as migrações ao banco de dados, siga os passos abaixo:
 3. Dentro do contêiner, execute o seguinte comando para rodar as migrações:
 
     ```bash
-    npx migrate dev
+    npx prisma migrate dev
     ```
 
     Isso aplicará as migrações necessárias ao banco de dados.
