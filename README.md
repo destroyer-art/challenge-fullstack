@@ -83,3 +83,5 @@ Lembre-se de que você só precisa rodar as migrações uma vez ou sempre que ho
   docker-compose down
 ```
 
+### No README.md da pasta backend explica como criar um user pra poder logar
+
