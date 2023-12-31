@@ -1,3 +1,5 @@
+// schema.prisma
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -11,6 +13,9 @@ model Order {
   id              Int    @id @default(autoincrement())
   customerName    String
   deliveryAddress String
+  cep             Int
+  city            String
+  neighborhood    String
   status          String
 }
 

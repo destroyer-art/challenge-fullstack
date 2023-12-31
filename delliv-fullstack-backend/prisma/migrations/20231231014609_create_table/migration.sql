@@ -3,6 +3,9 @@ CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
     "customerName" TEXT NOT NULL,
     "deliveryAddress" TEXT NOT NULL,
+    "cep" INTEGER NOT NULL,
+    "city" TEXT NOT NULL,
+    "neighborhood" TEXT NOT NULL,
     "status" TEXT NOT NULL,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
