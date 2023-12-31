@@ -20,9 +20,10 @@ export class AuthService {
       email: user.email,
       name: user.name,
     };
-    console.log(payload);
+
+    const expiresIn = 3600;
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, { expiresIn }),
     };
   }
 
