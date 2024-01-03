@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../../redux/actions/authActions";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Form, LoginFormContainer, Title } from "./styles";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Form, Div, Title } from "./styles";
 import Input from "../../atoms/Input";
 import Button from "../../atoms/Button";
 import Label from "../../atoms/Label";
@@ -23,15 +23,15 @@ export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
     e.preventDefault();
     try {
       if (!email || !password) {
-        throw new Error('Email and password are required');
+        throw new Error("Email and password are required");
       }
 
       // @ts-ignore
-      await dispatch(login(email, password, onLoginSuccess));
+      dispatch(login(email, password, onLoginSuccess));
 
       history.push("/");
     } catch (error: any) {
-      let errorMessage = 'Erro desconhecido';
+      let errorMessage = "Erro desconhecido";
       let statusCode = 500;
 
       if (error.response) {
@@ -44,13 +44,13 @@ export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
-        draggable: true
+        draggable: true,
       });
     }
   };
 
   return (
-    <LoginFormContainer>
+    <Div>
       <Title>Login</Title>
       <Form onSubmit={handleLogin}>
         <Label htmlFor="email">Email</Label>
@@ -70,11 +70,14 @@ export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
-        <Button data-testid="button" type="submit">
+        <Button
+          data-testid="button"
+          type="submit"
+        >
           Login
         </Button>
       </Form>
       <ToastContainer />
-    </LoginFormContainer>
+    </Div>
   );
 }

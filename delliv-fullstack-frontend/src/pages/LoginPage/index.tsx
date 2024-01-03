@@ -10,8 +10,8 @@ export default function LoginPage({ setAuthenticated }: LoginPageProps) {
   };
 
   return (
-    <div>
+    <>
       <LoginForm onLoginSuccess={handleLoginSuccess} />
-    </div>
-  )
+    </>
+  );
 }

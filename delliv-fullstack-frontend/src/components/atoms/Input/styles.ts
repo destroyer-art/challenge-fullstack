@@ -1,8 +1,17 @@
 import styled from "styled-components";
 
 export const StyledInput = styled.input`
-  padding: 8px;
-  margin: 5px;
-  border: 1 solid #ccc;
-  width: 100%;
+  font-family: "Couriew New", Courier, monospace;
+  font-weight: bold;
+  width: 30%;
+  font-size: 18px;
+  padding: 10px;
+  margin: 0px;
+  background: papayawhip;
+  border: none;
+  border-radius: 3px;
+  ::placeholder {
+    color: palevioletred;
+  }
 `;
+
