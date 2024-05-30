@@ -1,11 +1,5 @@
 # Autenticação (Sistema de Login) com Token JWT
 
-{% embed url="https://www.youtube.com/watch?v=3z6Cs_PtYc0" %}
-
-**Link do repositório no GitHub:** [https://github.com/FabricaDeSinapse/nestjs-auth](https://github.com/FabricaDeSinapse/nestjs-auth)
-
-**Link do Miro:** [https://miro.com/app/board/uXjVOXehwN4=/](https://miro.com/app/board/uXjVOXehwN4=/)
-
 ## Iniciando um projeto NestJS
 
 Antes de iniciar, certifique-se de que você possui um projeto NestJS criado e que a CLI do NestJS está instalada no seu computador.
